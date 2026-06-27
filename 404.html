@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>404 – Seite nicht gefunden | IT Happens GbR</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Manrope", "Segoe UI", sans-serif;
+            background: linear-gradient(180deg, #050b15 0%, #081120 46%, #091a2f 100%);
+            color: #edf4ff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 600px;
+        }
+        
+        .error-code {
+            font-size: 120px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #7df9d0, #39d0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        p {
+            font-size: 16px;
+            color: #97a9c8;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        a {
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #7df9d0, #39d0ff);
+            color: #07111f;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(125, 249, 208, 0.2);
+        }
+        
+        .btn-secondary {
+            border: 2px solid rgba(125, 249, 208, 0.3);
+            color: #7df9d0;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #7df9d0;
+            background: rgba(125, 249, 208, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-code">404</div>
+        <h1>Seite nicht gefunden</h1>
+        <p>
+            Sorry! Die angeforderte Seite existiert nicht oder wurde verschoben.
+            Verwenden Sie die Navigation oder gehen Sie zur Startseite.
+        </p>
+        <div class="actions">
+            <a href="/" class="btn-primary">Startseite</a>
+            <a href="javascript:history.back()" class="btn-secondary">Zurück</a>
+        </div>
+    </div>
+</body>
+</html>

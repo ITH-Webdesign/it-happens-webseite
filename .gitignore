@@ -1,0 +1,73 @@
+# .gitignore for IT Happens GbR Website
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+.sublime-*
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+
+# Build/Compilation
+dist/
+build/
+node_modules/
+package-lock.json
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Temporary files
+*.tmp
+*.temp
+.tmp
+
+# IDE
+workspace.xml
+*.iml
+
+# OS-specific
+.Thumbs.db
+desktop.ini
+
+# Testing
+coverage/
+.nyc_output/
+
+# System files
+*~
+thumbs.db
+.gradle
+*.exe
+
+# Hidden directories
+.git/
+.github/
+
+# Keep uploaded images
+!assets/images/

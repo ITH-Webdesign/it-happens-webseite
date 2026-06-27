@@ -1,0 +1,215 @@
+# HTTP to HTTPS Redirect + Security Headers
+# Last updated: April 16, 2026
+
+# ============================================================================
+# 1. ENFORCE HTTPS / SSL
+# ============================================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # index.html canonical to root
+    RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+    RewriteRule ^index\.html$ / [R=301,L]
+    
+    # Redirect HTTP to HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
+    # Redirect www to non-www (or vice versa - choose ONE)
+    # Option A: Remove www (recommended for SEO)
+    RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    RewriteRule ^(.*)$ https://%1%{REQUEST_URI} [L,R=301]
+
+    # Legacy URL redirects from previous page structure
+    RewriteRule ^microsoft-365\.html$ / [R=301,L,NC]
+    RewriteRule ^microsoft-copilot\.html$ /copilot [R=301,L,NC]
+    RewriteRule ^kontakt\.html$ / [R=301,L,NC]
+    RewriteRule ^einfuehrung-und-migration\.html$ / [R=301,L,NC]
+    RewriteRule ^betrieb-und-optimierung\.html$ / [R=301,L,NC]
+    RewriteRule ^betriebe-und-optimierung\.html$ / [R=301,L,NC]
+    RewriteRule ^eu-ai-act\.html$ / [R=301,L,NC]
+
+    # Duplicate alias to root
+    # m365.html (Dublette) auf / umleiten
+    RewriteRule ^m365\.html$ / [R=301,L]
+
+    # Canonical redirect: explicit .html to extensionless URL
+    RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+    RewriteRule ^(.+?)\.html$ /$1 [R=301,L]
+
+    # Internal rewrite: extensionless URL to existing .html file
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}\.html -f
+    RewriteRule ^([^/]+)$ $1.html [NC,L]
+
+    # Option B: Force www (commented out)
+    # RewriteCond %{HTTP_HOST} !^www\. [NC]
+    # RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ============================================================================
+# 2. SECURITY HEADERS
+# ============================================================================
+<IfModule mod_headers.c>
+    # Prevent Clickjacking
+    Header set X-Frame-Options "SAMEORIGIN"
+    
+    # Prevent MIME Sniffing
+    Header set X-Content-Type-Options "nosniff"
+    
+    # Enable XSS Protection
+    Header set X-XSS-Protection "1; mode=block"
+    
+    # Referrer Policy
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Content Security Policy (basic, adjust if needed)
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://default42dda7bc0c6c42ab984280a9e9bf32.b8.environment.api.powerplatform.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com; frame-src https://*.netlify.app; frame-ancestors 'self'"
+    
+    # Permissions Policy
+    Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    
+    # Remove Server Header (hide Apache version)
+    Header always unset X-Powered-By
+    Header unset X-Powered-By
+</IfModule>
+
+# ============================================================================
+# 3. DISABLE DIRECTORY LISTING
+# ============================================================================
+Options -Indexes
+
+# ============================================================================
+# 4. GZIP COMPRESSION (Performance)
+# ============================================================================
+<IfModule mod_deflate.c>
+    # Compress these file types
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/xml+rss
+    AddOutputFilterByType DEFLATE application/atom+xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE font/truetype
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    
+    # Don't compress images (already compressed)
+    # BrotliCompressionType text/html text/plain text/xml text/css text/javascript
+</IfModule>
+
+# ============================================================================
+# 5. BROWSER CACHING (Leverage for Performance)
+# ============================================================================
+<FilesMatch "\.(?:jpg|jpeg|png|gif|ico|svg|webp)$">
+    Header set Cache-Control "max-age=31536000, public"
+</FilesMatch>
+
+# CSS & JavaScript
+<FilesMatch "\.(?:css|js)$">
+    Header set Cache-Control "max-age=31536000, public"
+</FilesMatch>
+
+# Web Fonts
+<FilesMatch "\.(?:woff|woff2|ttf|otf|eot)$">
+    Header set Cache-Control "max-age=31536000, public"
+</FilesMatch>
+
+# HTML (short cache - allows updates)
+<FilesMatch "\.html?$">
+    Header set Cache-Control "max-age=3600, must-revalidate"
+</FilesMatch>
+
+# XML (Sitemap, Robots)
+<FilesMatch "\.(?:xml|txt)$">
+    Header set Cache-Control "max-age=86400, public"
+</FilesMatch>
+
+# ============================================================================
+# 6. HIDE SENSITIVE FILES
+# ============================================================================
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Hide specific files
+<FilesMatch "^(\.htaccess|\.htpasswd|\.env|config\.php|wp-config\.php)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Block markdown docs from web access
+<FilesMatch "\.md$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# ============================================================================
+# 7. ETAG (Browser Cache Validation)
+# ============================================================================
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+FileETag None
+
+# ============================================================================
+# 8. BLOCK MALICIOUS REQUESTS
+# ============================================================================
+<IfModule mod_rewrite.c>
+    # Block SQL Injection attempts
+    RewriteRule "(\*|%2a)" "-" [F,L]
+    RewriteRule "\.\.\/" "-" [F,L]
+    RewriteRule "\.\." "-" [F,L]
+    
+    # Block script injections
+    RewriteRule "(<|%3c).*script.*(>|%3e)" "-" [NC,F,L]
+    RewriteRule "(<|%3c).*iframe.*(>|%3e)" "-" [NC,F,L]
+</IfModule>
+
+# ============================================================================
+# 9. APACHE MODULES (Enable if needed)
+# ============================================================================
+# a2enmod rewrite
+# a2enmod headers
+# a2enmod deflate
+# a2enmod expires
+# systemctl restart apache2
+
+# ============================================================================
+# 10. ERROR DOCUMENT HANDLERS
+# ============================================================================
+ErrorDocument 403 /403.html
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
+
+# ============================================================================
+# 11. SITEMAP & ROBOTS HANDLING
+# ============================================================================
+# Let robots.txt and sitemap.xml be served with explicit content types
+<Files "robots.txt">
+    Header set Content-Type "text/plain; charset=UTF-8"
+</Files>
+
+<Files "sitemap.xml">
+    Header set Content-Type "application/xml; charset=UTF-8"
+</Files>
+
+# ============================================================================
+# 12. DEFAULT INDEX FILES
+# ============================================================================
+DirectoryIndex index.html index.htm index.php
+
+# ============================================================================
+# NOTES:
+# ============================================================================
+# - Replace 'it-happens-gbr.de' with your actual domain
+# - Enable necessary Apache modules via a2enmod
+# - Test after deployment: https://example.com/robots.txt
+# - Test SSL: https://www.ssllabs.com/ssltest/
+# - Monitor error logs: tail -f /var/log/apache2/error.log

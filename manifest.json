@@ -1,0 +1,59 @@
+{
+  "name": "IT Happens GbR",
+  "short_name": "IT Happens",
+  "description": "Ganzheitliche Microsoft 365 Betreuung aus einer Hand: Beratung, Administration, Security und Schulungen",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#07111f",
+  "background_color": "#07111f",
+  "categories": ["business", "technology"],
+  
+  "icons": [
+    {
+      "src": "/assets/images/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  
+  "shortcuts": [
+    {
+      "name": "Kostenlose Erstberatung",
+      "short_name": "Beratung",
+      "description": "Starten Sie jetzt Ihre kostenlose Erstberatung",
+      "url": "/?utm_source=pwa_shortcut&utm_campaign=consultation",
+      "icons": [
+        {
+          "src": "/assets/images/icon.svg",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Über uns",
+      "short_name": "Team",
+      "description": "Lernen Sie unser Team kennen",
+      "url": "/ueber-uns.html",
+      "icons": [
+        {
+          "src": "/assets/images/icon.svg",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  
+  "share_target": {
+    "action": "/",
+    "method": "POST",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}

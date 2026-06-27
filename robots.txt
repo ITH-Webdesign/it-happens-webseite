@@ -1,0 +1,8 @@
+# Robots.txt for IT Happens GbR
+# Last updated: April 2026
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://it.happens-gbr.de/sitemap.xml

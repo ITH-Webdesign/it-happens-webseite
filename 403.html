@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>403 – Zugriff verweigert | IT Happens GbR</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Manrope", "Segoe UI", sans-serif;
+            background: linear-gradient(180deg, #050b15 0%, #081120 46%, #091a2f 100%);
+            color: #edf4ff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 600px;
+        }
+        
+        .error-code {
+            font-size: 120px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffc76d, #ff8c42);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        p {
+            font-size: 16px;
+            color: #97a9c8;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        a {
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #ffc76d, #ff8c42);
+            color: #07111f;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 199, 109, 0.2);
+        }
+        
+        .btn-secondary {
+            border: 2px solid rgba(255, 199, 109, 0.3);
+            color: #ffc76d;
+        }
+        
+        .btn-secondary:hover {
+            border-color: #ffc76d;
+            background: rgba(255, 199, 109, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-code">403</div>
+        <h1>Zugriff verweigert</h1>
+        <p>
+            Sie haben keine Berechtigung, auf diese Ressource zuzugreifen.
+            Bitte kontaktieren Sie den Administrator für weitere Informationen.
+        </p>
+        <div class="actions">
+            <a href="/" class="btn-primary">Startseite</a>
+            <a href="mailto:support@it.happens-gbr.de" class="btn-secondary">Kontakt</a>
+        </div>
+    </div>
+</body>
+</html>
