@@ -67,7 +67,6 @@ thumbs.db
 
 # Hidden directories
 .git/
-.github/
 
 # Keep uploaded images
 !assets/images/
