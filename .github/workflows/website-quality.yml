@@ -1,0 +1,17 @@
+name: Website Quality Guard
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  seo-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run SEO/Infra Guard
+        run: bash standards/ci/seo-guard.sh
