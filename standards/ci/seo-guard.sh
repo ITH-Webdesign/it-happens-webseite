@@ -51,19 +51,24 @@ if grep -qE "<loc>https?://[^<]+\\.html</loc>" sitemap.xml; then fail "sitemap.x
 # HTML canonical and local .html link checks
 shopt -s nullglob
 for f in *.html; do
-  if [[ "$f" == "index.html" ]]; then
-    if grep -qE 'rel="canonical" href="https://it\.happens-gbr\.de/"' "$f"; then
-      pass "$f canonical root"
-    else
-      fail "$f: canonical root fehlt/abweichend"
-    fi
+  # Canonical is only required for indexable content pages.
+  if [[ "$f" == "403.html" || "$f" == "404.html" || "$f" == "500.html" || "$f" == googledab*.html ]]; then
+    pass "$f canonical check skipped (utility page)"
   else
-    if grep -qE 'rel="canonical" href="https://it\.happens-gbr\.de/[^"]+\.html"' "$f"; then
-      fail "$f: canonical endet auf .html"
-    elif grep -qE 'rel="canonical" href="https://it\.happens-gbr\.de/[^"]+"' "$f"; then
-      pass "$f canonical extensionless"
+    if [[ "$f" == "index.html" ]]; then
+      if grep -qE 'rel="canonical" href="https://it\.happens-gbr\.de/"' "$f"; then
+        pass "$f canonical root"
+      else
+        fail "$f: canonical root fehlt/abweichend"
+      fi
     else
-      fail "$f: canonical fehlt/ungueltig"
+      if grep -qE 'rel="canonical" href="https://it\.happens-gbr\.de/[^"]+\.html"' "$f"; then
+        fail "$f: canonical endet auf .html"
+      elif grep -qE 'rel="canonical" href="https://it\.happens-gbr\.de/[^"]+"' "$f"; then
+        pass "$f canonical extensionless"
+      else
+        fail "$f: canonical fehlt/ungueltig"
+      fi
     fi
   fi
 
